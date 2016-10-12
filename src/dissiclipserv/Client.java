@@ -17,21 +17,58 @@
 package dissiclipserv;
 
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Represente un client qui est connecté avec le serveur.
  * @author Florian BAYLE
  */
-public class Client extends Thread
+public class Client
 {
-    private Socket _sckSocket;
+    private Socket              _sckSocket;     //Le socket du client
+    
+    private String              _sPseudo;       //Le pseudo du client
+    private int                 _iId;           //Identifiant du client
+    private boolean             _bIsConnected;  //Si le client est connecté
+    private ArrayList<Client>   _aAmis;         //Amis du client
+    
     
     /**
-     * Constructeur
+     * Constructeur avec parametre socket
      * @param socket Socket du client
      */
     public Client(Socket socket)
     {
         _sckSocket = socket;
+    }
+    
+    /**
+     * Constructeur avec parametre pseudo
+     * @param pseudo Pseudo du client
+     */
+    public Client(String pseudo)
+    {
+        _sPseudo = pseudo;
+    }
+    
+    /**
+     * Constructeur avec parametre socket et pseudo
+     * @param socket
+     * @param pseudo 
+     */
+    public Client(Socket socket, String pseudo)
+    {
+        _sckSocket = socket;
+        _sPseudo = pseudo;
+    }
+
+    /**
+     * Permet de recuperer toutes les informations relative au client
+     * excepté le socket (voir, GetSocket())
+     * @return Structure contenant les dernieres informations du client.
+     */
+    public ClientInformations Information()
+    {
+        return new ClientInformations(_sPseudo, _iId, _bIsConnected, _aAmis);
     }
 }
