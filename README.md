@@ -1,2 +1,2 @@
 # DissiClipServ
-Java server for un clipboard network project
+Java server for a clipboard connected project.
