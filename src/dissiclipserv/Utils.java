@@ -32,6 +32,6 @@ public class Utils
      */
     static boolean CheckPort(int port)
     {
-        return !((port < 1024) || (port > 65335));
+        return !((port < 1024) || (port > 65535));
     }
 }
