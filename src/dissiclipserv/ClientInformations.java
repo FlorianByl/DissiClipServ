@@ -24,10 +24,10 @@ import java.util.ArrayList;
  */
 public class ClientInformations
 {
-    public String              _sPseudo;       //Le pseudo du client
-    public int                 _iId;           //Identifiant du client
-    public boolean             _bIsConnected;  //Si le client est connecté
-    public ArrayList<Client>   _aAmis;         //Amis du client
+    public String              _sPseudo;                         //Le pseudo du client
+    public int                 _iId;                             //Identifiant du client
+    public boolean             _bIsConnected;                    //Si le client est connecté
+    public ArrayList           _aAmis = new ArrayList();         //Amis du client
 
     public ClientInformations(String _sPseudo, int _iId, boolean _bIsConnected, ArrayList<Client> _aAmis)
     {
@@ -36,6 +36,10 @@ public class ClientInformations
         this._bIsConnected = _bIsConnected;
         this._aAmis = _aAmis;
     }
+    
+    public ClientInformations(){}
+    
+    
     
     
 }

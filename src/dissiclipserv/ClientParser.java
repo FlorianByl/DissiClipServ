@@ -19,8 +19,13 @@ package dissiclipserv;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jdom2.DataConversionException;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -34,11 +39,18 @@ import org.jdom2.output.XMLOutputter;
  */
 public class ClientParser 
 {
-    private static String _sFileName = "Clients.xml";
+    private static String   _sFileName = "Clients.xml";
     
-    private Document _xmlDocument;
-    private Element _xmlRacine;
+    private Document        _xmlDocument;
+    private Element         _xmlRacine;
     
+    private ArrayList       _alClients = new ArrayList();
+    
+    /**
+     * Parse le fichier xml et recupere toutes les informations
+     * relative aux clients
+     * @throws IOException 
+     */
     public ClientParser() throws IOException
     {
         SAXBuilder sxb = new SAXBuilder();
@@ -50,8 +62,46 @@ public class ClientParser
         }
         
         _xmlRacine = _xmlDocument.getRootElement();
+        
+        //Parse la liste des clients
+        List clients = _xmlRacine.getChildren("client");
+        
+        Iterator i = clients.iterator();
+        
+        while(i.hasNext())
+        {            
+            Element client = (Element)i.next();
+            ClientInformations tmp_info = new ClientInformations();
+            
+            try {
+                
+                tmp_info._iId = client.getAttribute("id").getIntValue();
+                tmp_info._sPseudo = client.getChild("pseudo").getText();
+                
+                tmp_info._bIsConnected = false;
+                
+                Element friends = client.getChild("friends");
+                
+                List ids = friends.getChildren("id");
+                
+                Iterator j = ids.iterator();
+                
+                while(j.hasNext())
+                {
+                    Element id = (Element)j.next();
+                    tmp_info._aAmis.add(parseInt(id.getText()));
+                }
+            
+            } catch (DataConversionException ex) {}
+            
+            _alClients.add(tmp_info);
+            
+        }
     }
     
+    /**
+     * Génére un fichier xml destine a la gestion des clients
+     */
     public static void CreateFileClient()
     {
         File file;
