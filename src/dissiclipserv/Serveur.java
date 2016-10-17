@@ -16,13 +16,23 @@
  */
 package dissiclipserv;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Florian BAYLE
  */
 public class Serveur 
 {
-    private int _iPort;
+    private ServerSocket    _ssSocket;
+    private int             _iPort;
+    private ClientParser    _cpClientSave;
     
     /**
      * 
@@ -30,7 +40,21 @@ public class Serveur
      */
     public Serveur (int port)
     {
+        _iPort = port;
         
+        //Recuperation des clients sauvegardés en XML
+        try {            
+            _cpClientSave = new ClientParser();
+        } catch (IOException ex) {
+            Logger.getLogger("Load client file failed");
+        }
+        
+        //Creation du socket d'écoute
+        try {
+            _ssSocket = new ServerSocket(_iPort);
+        } catch(IOException ex) {
+            Logger.getLogger("Error in serversocket creating");
+        }
     }
     
     /**
@@ -38,7 +62,23 @@ public class Serveur
      */
     public void Listen()
     {
-        
+        while(true){
+        Socket socket = null;
+        try {
+            socket = _ssSocket.accept();
+            
+            InputStream is = socket.getInputStream();
+            OutputStream os = socket.getOutputStream();
+            
+            byte[] c = new byte[100];
+            is.read(c);
+            
+            System.out.println(new String(c));
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Serveur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
     }
     
     

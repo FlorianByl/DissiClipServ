@@ -100,6 +100,15 @@ public class ClientParser
     }
     
     /**
+     * Retourne la liste des clients analysees dans le fichier xml
+     * @return Liste des informations clients
+     */
+    public ArrayList GetClient()
+    {
+        return _alClients;
+    }
+
+    /**
      * Génére un fichier xml destine a la gestion des clients
      */
     public static void CreateFileClient()
